@@ -1,6 +1,7 @@
 # To-do App
 
 ### 更新紀錄
+- 11/30 完成 (86/309) 課程，會使用 laravel 實作基本 one/many relationship、CRUD 打算做完這一次的 practice(第 125 節) 後開始實做此專案。預計明天完成。
 - 11/25 專案確立、確認規格、時程（12/24 前做完）
 
 ### To-do
@@ -20,7 +21,7 @@
 - （ ）**Upgrade(function)** - Real-time update in frontend(Pushing notification in backend)
 
 ##### 預計時程
-- 11/30 : 完成 laravel 線上課程
+- 11/30 : 完成 laravel 線上課程 -> maybe ~ 12/2。
 - 12/03 : 完成 coding env、db Structure
 - 12/10 : 完成 規格 1、2、3、4、5、6
 - 12/13 : 完成 規格 7、8
@@ -50,4 +51,3 @@
 1. 註冊時檢查 email 所有權（例如寄出認證信）
 2. 實作後端推播功能，當兩個瀏覽器頁面同時開啟時，頁面1更新狀態，頁面2也要同步更新
 3. 實作防註冊機器人功能，例如 reCAPTCHA、限制請求次數...皆可
-
