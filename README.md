@@ -1,7 +1,7 @@
 # To-do App
 
 ### 更新紀錄
-- 11/30 完成 (86/309) 課程，會使用 laravel 實作基本 one/many relationship、CRUD 打算做完這一次的 practice(第 125 節) 後開始實做此專案。預計明天完成。
+- 11/30 完成 Udemy online course (86/309) 課程，已會使用 laravel 實作基本 one/many relationship、CRUD。<br>打算看到第 125 節後開始實做todo-app專案。預計明天完成線上課程。
 - 11/25 專案確立、確認規格、時程（12/24 前做完）
 
 ### To-do
