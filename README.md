@@ -1,8 +1,9 @@
 # To-do App
 
 ### 更新紀錄
-- 11/30 完成 Udemy online course (86/309) 課程，已會使用 laravel 實作基本 one/many relationship、CRUD。<br>打算看到第 125 節後開始實做todo-app專案。預計明天完成線上課程。
-- 11/25 專案確立、確認規格、時程（12/24 前做完）
+- [12/03] 初始化 laravel 環境、db schema、基本的關係
+- [11/30] 完成 Udemy online course (86/309) 課程，已會使用 laravel 實作基本 one/many relationship、CRUD。<br>打算看到第 125 節後開始實做todo-app專案。預計明天完成線上課程。
+- [11/25] 專案確立、確認規格、時程（12/24 前做完）
 
 ### To-do
 - （ ）Finish Udemy's laravel online course.
