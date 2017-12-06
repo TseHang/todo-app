@@ -1,22 +1,110 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+(() => {
+    const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    const transformToTaskRow = (content, id) => {
+      return `
+        <div class="task-row" id="${id}">
+        <input type="checkbox" name="" data-id="${id}" class="checkbox">
+        <p class="task-description">${content}</p>
+        <button data-id="${id}" class="btn-delete-task">del</button>
+        </div>
+        `;
+    };
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    // $.get('http://tsehang.todolist.simpleinfo.tw/task', response => {
+    //   const taskList = response;
+    //   initDataList(taskList);
+    //   setFunction();
+    // });
+    // TODO: 改成 if self.fetch ..... 記得加header
+    fetch('http://tsehang.todolist.simpleinfo.tw/task')
+      .then(response => response.json())
+      .then(taskList => {
+        initDataList(taskList);
+        setFunction();
+      });
+  
+    function initDataList(taskList) {
+      for (let i = 0; i < taskList.length; i++) {
+        const content = taskList[i].content;
+        const id = taskList[i].id;
+        insertNewTask(content, id);
+      }
+    }
+  
+    function setFunction() {
+      $('.input-task').keypress(function(event) {
+        let keycode = event.keyCode ? event.keyCode : event.which;
+        if (keycode === 13) {
+          const content = $(this).val();
+          createTask(content, newId => {
+            insertNewTask(content, newId);
+            $('html, body').animate(
+              {
+                scrollTop: $(`.task-row#${newId}`).offset().top,
+              },
+              500,
+              'swing'
+            );
+          });
+          $(this).val('');
+        }
+      });
+  
+      $('.btn-delete-task').on('click', function() {
+        const id = $(this).data('id');
+        clearDeleteTask(id);
+      });
+  
+      $('.checkbox').on('click', function() {
+        const taskId = $(this).data('id');
+        const taskRow = $(`.task-row#${taskId}`);
+        taskRow.toggleClass('checked');
+        if ($(this).prop('checked')) {
+          taskRow.animate(
+            {
+              left: '300%',
+              opacity: '0',
+            }, 500, () => {
+              taskRow.hide();
+            }
+          );
+        }
+      });
+    }
+  
+    function insertNewTask(content, id) {
+      $('.task-container').append(transformToTaskRow(content, id));
+    }
+    function clearDeleteTask(id) {
+      $(`.task-row#${id}`).hide();
+      deleteTask(id);
+    }
+  
+    function createTask(content, cb) {
+      $.ajax({
+        url: '/tasks',
+        type: 'POST',
+        data: {
+          content,
+        },
+        dataType: 'json',
+        success: response => {
+          console.log(response)
+          // cb(response.id)
+        }
+      })
+    }
+  
+    function deleteTask(id) {
+      $.post(
+        `http://tsehang.todolist.simpleinfo.tw/task/${id}/delete`,
+        (response, status) => {
+          console.log(`Data: ${response}\nStatus: ${status}`);
+        }
+      );
+    }
+  })();

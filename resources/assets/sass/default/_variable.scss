@@ -1,0 +1,53 @@
+/*
+ *	Breakpoint
+ */
+
+$break-point:(
+	mobile-s: 240px,
+	mobile-l: 320px,
+	table-s:  480px,
+	table-l:  768px,
+	screen-s: 1024px,
+	screen-l: 1280px,
+	screen-xl:1350px
+);
+
+/*
+ *	Color
+ */
+
+$color:(
+	blue:  #3FA9F5,
+	green: #02B875,
+	red-pink:  	#EC8D81,
+	yellow-earthy: #E7B788,
+	green-pink: #87C5A4,
+	purple: #8D82C4,
+	black-light:#2A2B2A
+);
+
+$color-todo:(
+	light-grey-two: #E9E7DA,
+	drab: #737B46 ,
+);
+
+
+/*
+ *	Font
+ */
+$letter-spacing:(
+	s: 2px,
+	m: 4px,
+	l: 6px
+);
+
+$font-PingFangSB: PingFangTC-Semibold;
+$font-PingFangR: PingFangTC-Regular;
+$font-size--base: 16px;
+$font-default: "Roboto Condensed",
+"Georgia",
+"Xin Gothic",
+"Hiragino Sans GB",
+"Droid Sans Fallback",
+"Microsoft YaHei",
+sans-serif;

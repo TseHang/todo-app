@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Tasks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TasksController extends Controller
 {
@@ -14,6 +16,7 @@ class TasksController extends Controller
     public function index()
     {
         //
+        return view('tasks');
     }
 
     /**
@@ -34,7 +37,14 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //  
+        $request['user_id'] = 1;
+
+        // 只要加入這一行就會 500 error，已試過 csrf_token, chmod, .htaccess 方法，正在找解決辦法
+        // $input = Tasks::create($request);
+        
+
+        return $request;
     }
 
     /**

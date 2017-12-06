@@ -1,6 +1,7 @@
 # To-do App
 
 ### 更新紀錄
+- [12/06] 嘗試串接 API，遇到 Http 500 (Internal-server-error)
 - [12/03] 初始化 laravel 環境、db schema、基本的關係
 - [11/30] 完成 Udemy online course (86/309) 課程，已會使用 laravel 實作基本 one/many relationship、CRUD。<br>打算看到第 125 節後開始實做todo-app專案。預計明天完成線上課程。
 - [11/25] 專案確立、確認規格、時程（12/24 前做完）
@@ -29,6 +30,9 @@
 - 12/15 : 實作 Nice to have & degub & try
 
 ### 實作問題區
+1. Laravel Ajax 500 Internal Server error:
+[目前查到相關解答(但都是過了還是無效...還在找原因 QAQ)] (https://abbasharoon.me/how-to-fix-laravel-ajax-500-internal-server-error/)
+
 
 
 

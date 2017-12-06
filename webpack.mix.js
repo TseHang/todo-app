@@ -11,5 +11,10 @@ let mix = require('laravel-mix');
  |
  */
 
+//  Mix run 'Auto-prefixer', Es6, basically.
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+  .sass('resources/assets/sass/app.scss', 'public/css', {
+    includePaths: [
+      `${__dirname}/node_modules/normalize-scss/sass` ,
+    ]
+  });

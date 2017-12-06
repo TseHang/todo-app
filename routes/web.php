@@ -1,5 +1,5 @@
 <?php
-
+use App\Tasks;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/tasks', 'TasksController')->except('show');
+Route::resource('/tasks', 'TasksController')->except(['show', 'create']);
+
+Route::get('taa/{user_id}', function($user_id) {
+    // $request = array_except($request, ['_token']);
+    echo 
+    $request = [
+        'user_id' => $user_id,
+        'content' => '1233333',
+    ];
+    $input = Tasks::create($request);
+    
+
+    return $input;
+});
