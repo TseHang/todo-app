@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tasks;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -15,8 +16,8 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //
-        return view('tasks');
+        $query = User::findOrFail(1)->tasks->all();
+        return $query;
     }
 
     /**
@@ -37,14 +38,10 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //  
-        $request['user_id'] = 1;
-
-        // 只要加入這一行就會 500 error，已試過 csrf_token, chmod, .htaccess 方法，正在找解決辦法
-        // $input = Tasks::create($request);
         
-
-        return $request;
+        $request['user_id'] = 1;
+        $input = Tasks::create($request->all());
+        return $input;
     }
 
     /**
@@ -78,7 +75,8 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updated = Tasks::find($id)->update($request->all());
+        return (string) $updated;
     }
 
     /**
@@ -87,8 +85,8 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($task_id)
     {
-        //
+        return (string) Tasks::findOrFail($task_id)->delete();
     }
 }

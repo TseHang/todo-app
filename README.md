@@ -1,17 +1,19 @@
 # To-do App
 
 ### 更新紀錄
+- [12/08] 完成 CRUD 基本功能，與前端介面整合，並加上 with done 功能。然後把前端全部改成 fetch request。
+- [12/07] 解掉 500(Internal server error) 問題，最後發現是 request type 問題。
 - [12/06] 嘗試串接 API，遇到 Http 500 (Internal-server-error)
 - [12/03] 初始化 laravel 環境、db schema、基本的關係
 - [11/30] 完成 Udemy online course (86/309) 課程，已會使用 laravel 實作基本 one/many relationship、CRUD。<br>打算看到第 125 節後開始實做todo-app專案。預計明天完成線上課程。
 - [11/25] 專案確立、確認規格、時程（12/24 前做完）
 
 ### To-do
-- （ ）Finish Udemy's laravel online course.
-- （ ）Build coding env. 
-- （ ）Build/set db structure.
-- （ ）Implement CRUD.
-- （ ）Implement recording items whether it have done.
+- （ˇ）Finish Udemy's laravel online course.
+- （ˇ）Build coding env. 
+- （ˇ）Build/set db structure.
+- （ˇ）Implement CRUD.
+- （ˇ）Implement recording items whether it have done.
 - （ ）Implement account system(Log-in / Log-out / Sign-in/).
 - （ ）Implement 規格(No.5).
 - （ ）Implement 規格(No.6).
@@ -31,10 +33,12 @@
 
 ### 實作問題區
 1. Laravel Ajax 500 Internal Server error:
-[目前查到相關解答(但都是過了還是無效...還在找原因 QAQ)] (https://abbasharoon.me/how-to-fix-laravel-ajax-500-internal-server-error/)
+[目前查到相關解答，但都試過了還是無效...還在找原因 QAQ)](https://abbasharoon.me/how-to-fix-laravel-ajax-500-internal-server-error/)
+最後發現是 $request error ><
 
-
-
+2. fetch Post & Put & Delete 問題 (Get 卻沒問題＠＠):
+懷疑跟 laravel 安全性，cookies 有關。
+最後在 init 加上 `credentials: 'include'` 就可以了。
 
 ---
 

@@ -76,98 +76,193 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 (function () {
+  // [Feature]: 點兩下編輯文字！！
+  var FETCH = self.fetch ? true : false;
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-  var transformToTaskRow = function transformToTaskRow(content, id) {
-    return '\n        <div class="task-row" id="' + id + '">\n        <input type="checkbox" name="" data-id="' + id + '" class="checkbox">\n        <p class="task-description">' + content + '</p>\n        <button data-id="' + id + '" class="btn-delete-task">del</button>\n        </div>\n        ';
+  var headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': CSRF_TOKEN
   };
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  // $.get('http://tsehang.todolist.simpleinfo.tw/task', response => {
-  //   const taskList = response;
-  //   initDataList(taskList);
-  //   setFunction();
-  // });
-  // TODO: 改成 if self.fetch ..... 記得加header
-  fetch('http://tsehang.todolist.simpleinfo.tw/task').then(function (response) {
-    return response.json();
-  }).then(function (taskList) {
-    initDataList(taskList);
-    setFunction();
-  });
+  var transformToTaskRow = function transformToTaskRow(content, id, done) {
+    return '\n        <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + (done ? true : false) + '">\n        <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n        <p class="task-description">' + content + '</p>\n        <button data-id="' + id + '" class="btn-delete-task">del</button>\n        </div>\n        ';
+  };
 
-  function initDataList(taskList) {
-    for (var i = 0; i < taskList.length; i++) {
-      var content = taskList[i].content;
-      var id = taskList[i].id;
-      insertNewTask(content, id);
-    }
+  if (FETCH) {
+    fetch('/tasks', {
+      headers: headers,
+      method: 'GET'
+    }).then(function (response) {
+      return response.json();
+    }).then(function (taskList) {
+      initDataList(taskList);
+      initFormFunction();
+      setTaskRawFunction();
+    });
+    console.log('Fetch!');
+  } else {
+    // Use ajax.
+    $.ajaxSetup({
+      headers: headers
+    });
+    $.get('/tasks', function (response) {
+      var taskList = response;
+      initDataList(taskList);
+      initFormFunction();
+      setTaskRawFunction();
+    });
+    console.log('No Fetch!');
   }
 
-  function setFunction() {
+  function initDataList(taskList) {
+    taskList.forEach(function (task, index) {
+      var content = task.content;
+      var id = task.id;
+      var done = task.is_done;
+      insertToContainer(content, id, done);
+    });
+  }
+
+  function initFormFunction() {
     $('.input-task').keypress(function (event) {
       var keycode = event.keyCode ? event.keyCode : event.which;
       if (keycode === 13) {
         var content = $(this).val();
         createTask(content, function (newId) {
-          insertNewTask(content, newId);
-          $('html, body').animate({
-            scrollTop: $('.task-row#' + newId).offset().top
-          }, 500, 'swing');
+          return insertToContainer(content, newId);
         });
         $(this).val('');
       }
     });
 
-    $('.btn-delete-task').on('click', function () {
+    $('#with-done').on('click', function () {
+      $('[data-done="true"]').toggleClass('hidden');
+    });
+
+    function slideToNewTask(newId) {
+      $('html, body').animate({
+        scrollTop: $('.task-row#' + newId).offset().top
+      }, 500, 'swing');
+    }
+  }
+
+  function setTaskRawFunction() {
+
+    $('.task-container').on('click', '.btn-delete-task', function () {
       var id = $(this).data('id');
-      clearDeleteTask(id);
+      $('.task-row#' + id).hide();
+      deleteTask(id);
     });
 
-    $('.checkbox').on('click', function () {
+    $('.task-container').on('click', '.checkbox', function () {
       var taskId = $(this).data('id');
-      var taskRow = $('.task-row#' + taskId);
-      taskRow.toggleClass('checked');
-      if ($(this).prop('checked')) {
-        taskRow.animate({
-          left: '300%',
-          opacity: '0'
-        }, 500, function () {
-          taskRow.hide();
-        });
+      var $taskRow = $('.task-row#' + taskId);
+      var checked = $(this).prop('checked');
+      var data = {
+        is_done: checked
+      };
+      if (checked) {
+        var withDoneStatus = $('#with-done').prop('checked');
+        slideRightAnimation($taskRow, withDoneStatus);
+      } else {
+        $taskRow.attr('data-done', 'false');
       }
+      updateTask(data, taskId);
     });
+
+    function slideRightAnimation($taskRow, withDoneStatus) {
+      $taskRow.animate({
+        left: '300%',
+        opacity: '-10'
+      }, 700, 'swing', function () {
+        if (!withDoneStatus) $taskRow.addClass('hidden');
+        $taskRow.attr('data-done', 'true');
+        $taskRow.css({
+          left: 0,
+          opacity: 1
+        });
+      });
+    }
   }
 
-  function insertNewTask(content, id) {
-    $('.task-container').append(transformToTaskRow(content, id));
-  }
-  function clearDeleteTask(id) {
-    $('.task-row#' + id).hide();
-    deleteTask(id);
+  function insertToContainer(content, id) {
+    var done = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    $('.task-container').prepend(transformToTaskRow(content, id, done));
   }
 
   function createTask(content, cb) {
-    $.ajax({
-      url: '/tasks',
-      type: 'POST',
-      data: {
-        content: content
-      },
-      dataType: 'json',
-      success: function success(response) {
-        console.log(response);
-        // cb(response.id)
-      }
+    var stringfyData = JSON.stringify({
+      content: content
     });
+
+    if (FETCH) {
+      fetch('/tasks', {
+        headers: headers,
+        method: 'POST',
+        body: stringfyData,
+        credentials: 'include' // cookie
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        return cb(data.id);
+      });
+    } else {
+      $.ajax({
+        url: '/tasks',
+        type: 'POST',
+        data: stringfyData,
+        success: function success(response) {
+          return cb(response.id);
+        }
+      });
+    }
   }
 
-  function deleteTask(id) {
-    $.post('http://tsehang.todolist.simpleinfo.tw/task/' + id + '/delete', function (response, status) {
-      console.log('Data: ' + response + '\nStatus: ' + status);
-    });
+  function deleteTask(taskId) {
+    if (FETCH) {
+      fetch('/tasks/' + taskId, {
+        headers: headers,
+        method: 'DELETE',
+        credentials: 'include' // cookie
+      }).then(function (response) {
+        return response.text();
+      }).then(function (response) {
+        return console.log('The task ' + taskId + ' deleted ? : ' + (response ? 'true' : 'false'));
+      });
+    } else {
+      $.ajax({
+        url: '/tasks/' + taskId,
+        type: 'DELETE',
+        success: function success(response) {
+          return console.log('The task ' + taskId + ' deleted ? : ' + (response ? 'true' : 'false'));
+        }
+      });
+    }
+  }
+
+  function updateTask(data, taskId) {
+    if (FETCH) {
+      fetch('/tasks/' + taskId, {
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data),
+        credentials: 'include' // cookie
+      }).then(function (response) {
+        return response.text();
+      }).then(function (status) {
+        return console.log('Update: ' + (status ? 'true' : 'false'));
+      });
+    } else {
+      $.ajax({
+        url: '/tasks/' + taskId,
+        type: 'PUT',
+        data: JSON.stringify(data),
+        success: function success(status) {
+          return console.log('Update: ' + (status ? 'true' : 'false'));
+        }
+      });
+    }
   }
 })();
 

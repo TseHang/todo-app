@@ -5,12 +5,17 @@ body {
   height: 100vh;
 }
 
+hr {
+  background-color: map-get($color-todo, drab);
+  border: none;
+  height: 2px;
+}
 .container {
   background-color: map-get($color-todo, light-grey-two);
   box-sizing: border-box;
   width: 97.8%;
   min-height: 96.4%;
-  margin: 1.8% auto 0 auto;
+  margin: 1em auto;
   padding: 3.2% 8.1%;
   border-radius: 4px;
   overflow: hidden;
@@ -63,6 +68,8 @@ body {
 
 .task-container {
   padding: 13px 0;
+  max-height: 49vh;
+  overflow: scroll;
 }
 
 .task-row {

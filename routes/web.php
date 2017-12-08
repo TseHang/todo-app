@@ -11,21 +11,13 @@ use App\Tasks;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
+Route::group(['middleware' => 'VerifyUser'], function () {
+    Route::get('/', function () {
+        return view('tasks');
+    });
 
-Route::resource('/tasks', 'TasksController')->except(['show', 'create']);
-
-Route::get('taa/{user_id}', function($user_id) {
-    // $request = array_except($request, ['_token']);
-    echo 
-    $request = [
-        'user_id' => $user_id,
-        'content' => '1233333',
-    ];
-    $input = Tasks::create($request);
-    
-
-    return $input;
+    Route::resource('/tasks', 'TasksController')->except(['edit', 'show', 'create']);
 });
