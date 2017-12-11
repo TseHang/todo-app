@@ -1,5 +1,8 @@
 (() => {
-    // [Feature]: 點兩下編輯文字！！
+    /*
+      [Function]: Add login/logout/sign-in
+      [Feature]: 點兩下編輯文字！！
+    */
     const FETCH = self.fetch ? true : false;
     const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     const headers = {

@@ -14,6 +14,17 @@ use App\Tasks;
 Route::get('/welcome', function () {
     return view('welcome');
 });
+
+Route::get('/home', function() {
+    return view('home');
+});
+
+Route::get('/login', function() {
+    return view('login');
+});
+
+Route::post('/store', 'AuthActionController@store'); 
+
 Route::group(['middleware' => 'VerifyUser'], function () {
     Route::get('/', function () {
         return view('tasks');

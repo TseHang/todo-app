@@ -76,7 +76,10 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 (function () {
-  // [Feature]: 點兩下編輯文字！！
+  /*
+    [Function]: Add login/logout/sign-in
+    [Feature]: 點兩下編輯文字！！
+  */
   var FETCH = self.fetch ? true : false;
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var headers = {
