@@ -10,17 +10,23 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@17media/eslint-config-17media": "^1.2.0",
         "axios": "^0.17",
         "bootstrap-sass": "^3.3.7",
         "browser-sync": "^2.18.13",
         "browser-sync-webpack-plugin": "^1.2.0",
         "cross-env": "^5.1",
+        "eslint": "^4.13.1",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.8.0",
         "jquery": "^3.2",
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "babel-eslint": "^8.0.3",
+        "eslint-plugin-react": "^7.5.1",
         "normalize-scss": "^7.0.0"
     }
 }

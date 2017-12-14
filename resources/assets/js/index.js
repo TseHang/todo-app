@@ -1,13 +1,14 @@
 (() => {
-  const transformToTaskRow = (content, id) => {
-    return `
+  const $ = jQuery;
+  const transformToTaskRow = (content, id) => (
+    `
       <div class="task-row" id="${id}">
       <input type="checkbox" name="" data-id="${id}" class="checkbox">
       <p class="task-description">${content}</p>
       <button data-id="${id}" class="btn-delete-task">del</button>
       </div>
-      `;
-  };
+    `
+  );
 
   // $.get('http://tsehang.todolist.simpleinfo.tw/task', response => {
   //   const taskList = response;
@@ -17,7 +18,7 @@
   // TODO: 改成 if self.fetch ..... 記得加header
   fetch('http://tsehang.todolist.simpleinfo.tw/task')
     .then(response => response.json())
-    .then(taskList => {
+    .then((taskList) => {
       initDataList(taskList);
       setFunction();
     });
@@ -31,11 +32,11 @@
   }
 
   function setFunction() {
-    $('.input-task').keypress(function(event) {
+    $('.input-task').keypress(function (event) {
       let keycode = event.keyCode ? event.keyCode : event.which;
       if (keycode === 13) {
         const content = $(this).val();
-        createTask(content, newId => {
+        createTask(content, (newId) => {
           insertNewTask(content, newId);
           $('html, body').animate(
             {
@@ -49,7 +50,7 @@
       }
     });
 
-    $('.btn-delete-task').on('click', function() {
+    $('.btn-delete-task').on('click', function () {
       const id = $(this).data('id');
       clearDeleteTask(id);
     });
@@ -65,9 +66,7 @@
             opacity: '0',
           },
           500,
-          () => {
-            taskRow.hide();
-          }
+          () => taskRow.hide(),
         );
       }
     });
@@ -85,9 +84,7 @@
     $.post(
       'http://tsehang.todolist.simpleinfo.tw/task',
       { content },
-      (response, status) => {
-        cb(response.id);
-      }
+      response => cb(response.id)
     );
   }
 

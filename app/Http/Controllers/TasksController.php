@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Tasks;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class TasksController extends Controller
 {

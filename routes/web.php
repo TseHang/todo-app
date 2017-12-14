@@ -23,12 +23,12 @@ Route::get('/login', function() {
     return view('login');
 });
 
-Route::post('/store', 'AuthActionController@store'); 
-
 Route::group(['middleware' => 'VerifyUser'], function () {
     Route::get('/', function () {
         return view('tasks');
     });
+
+    Route::post('/login', 'AuthActionController@login'); 
 
     Route::resource('/tasks', 'TasksController')->except(['edit', 'show', 'create']);
 });

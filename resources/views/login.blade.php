@@ -1,9 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-{!! Form::open(['method'=>'POST', 'action'=> 'AuthActionController@store']) !!}
-sssss
+{!! Form::open(['method'=>'POST', 'url'=> '/login']) !!}
+
+<div class="form-group">
+	{!! Form::label('username: ', null, ['class' => 'username']) !!}
+	{!! Form::text('name'); !!}
+</div>
+
+<div class="form-group">
+	{!! Form::label('email: ', null, ['placeholder' => 'Email@example.com', 'id' => 'email', 'class' => 'form-control']) !!}
+	{!! Form::email('email', $value = null, $attributes = []) !!}
+</div>
+
+<div class="form-group">
+	{!! Form::label('password: ', null, ['class' => 'password']) !!}
+	{!! Form::password('password', ['class' => 'password']); !!}
+</div>
+
+
+<div class="form-group">
+	<div class="yoyoman">
+		<button type="submit" class="btn btn-primary">Login</button>
+
+		<a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+	</div>
+</div>
+
 {!! Form::close() !!}
+
+@include('includes.form_errors')
 
 
 {{--  <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">

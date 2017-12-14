@@ -4,7 +4,7 @@
 <head>
 
   @include('includes.head')
-  <!-- <title> Todo/{{Auth::user()->name}} </title> -->
+  {{--  <!-- <title> Todo/{{Auth::user()->name}} </title> -->  --}}
   <link rel="stylesheet" href = "{{asset('css/app.css')}}">
 
 </head>
