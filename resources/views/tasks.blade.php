@@ -6,7 +6,7 @@
   @include('includes.head')
   {{--  <!-- <title> Todo/{{Auth::user()->name}} </title> -->  --}}
   <link rel="stylesheet" href = "{{asset('css/app.css')}}">
-
+  <title>Todo Tasks</title>
 </head>
 <body>
   <div class="container">

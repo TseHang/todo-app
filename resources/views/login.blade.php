@@ -18,6 +18,11 @@
 	{!! Form::password('password', ['class' => 'password']); !!}
 </div>
 
+{{--  <div class="form-group">
+	{!! Form::label('Confirm password: ', null, ['class' => 'password']) !!}
+	{!! Form::password('password', ['class' => 'password']); !!}
+</div>  --}}
+
 
 <div class="form-group">
 	<div class="yoyoman">

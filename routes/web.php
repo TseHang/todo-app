@@ -15,20 +15,17 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/home', function() {
-    return view('home');
-});
-
-Route::get('/login', function() {
-    return view('login');
-});
-
 Route::group(['middleware' => 'VerifyUser'], function () {
     Route::get('/', function () {
-        return view('tasks');
+        return view('home');
     });
 
+    Route::get('/login', 'AuthActionController@show');
     Route::post('/login', 'AuthActionController@login'); 
+
+    Route::get('/{user}/tasks', function ($user) {
+        return view('tasks');
+    });
 
     Route::resource('/tasks', 'TasksController')->except(['edit', 'show', 'create']);
 });
