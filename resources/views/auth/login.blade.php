@@ -29,9 +29,9 @@
 
 {!! Form::close() !!}
 
-@if($login_problem)
+@if($login_description)
 <div class="alert alert-danger">
-	<h1>Wrong user or password!!</h1>
+	<h1>{{$login_description}}</h1>
 </div>
 @endif
 

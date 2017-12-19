@@ -1,5 +1,4 @@
 <?php
-use App\Tasks;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,4 +30,27 @@ Route::group(['middleware' => 'VerifyUser'], function () {
     });
 
     Route::resource('/tasks', 'TasksController')->except(['edit', 'show', 'create']);
+});
+
+
+Route::get('register/verify/{confirmationCode}_email_verify', [
+    'as' => 'register.verify.confirmation',
+    'uses' => 'AuthActionController@confirm'
+]);
+
+
+Route::get('/clear', function() {
+    session()->forget('todoApp');
+    return redirect('/')->withCookie(Cookie::forget('todoApp'));
+});
+
+Route::get('/mailTest', function () {
+    $data = [
+        'title' => 'Hihi~~',
+        'content' => 'This is content',
+    ];
+
+    Mail::send('email.test', $data, function ($message) {
+        $message->to('a54383813@gmail.com', 'Henry')->subject('Hello stident, how r u');
+    });
 });
