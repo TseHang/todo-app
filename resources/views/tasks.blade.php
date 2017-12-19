@@ -10,6 +10,7 @@
 </head>
 <body>
   <div class="container">
+    <a href="/logout">Log out</a>
     <div class="date-container">
       <span class="date">
         24

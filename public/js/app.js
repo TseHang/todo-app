@@ -77,18 +77,18 @@ module.exports = __webpack_require__(2);
 
 (function () {
   /*
-    [Function]: Add login/logout/sign-in
-    [Feature]: 點兩下編輯文字！！
-  */
-  var FETCH = self.fetch ? true : false;
+      [Function]: Add login/logout/sign-in
+      [Feature]: 點兩下編輯文字！！
+    */
+  var FETCH = self.fetch;
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var headers = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
     'X-CSRF-TOKEN': CSRF_TOKEN
   };
   var transformToTaskRow = function transformToTaskRow(content, id, done) {
-    return '\n        <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + (done ? true : false) + '">\n        <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n        <p class="task-description">' + content + '</p>\n        <button data-id="' + id + '" class="btn-delete-task">del</button>\n        </div>\n        ';
+    return '\n      <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + done + '">\n      <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n      <p class="task-description">' + content + '</p>\n      <button data-id="' + id + '" class="btn-delete-task">del</button>\n      </div>\n    ';
   };
 
   if (FETCH) {
@@ -150,7 +150,6 @@ module.exports = __webpack_require__(2);
   }
 
   function setTaskRawFunction() {
-
     $('.task-container').on('click', '.btn-delete-task', function () {
       var id = $(this).data('id');
       $('.task-row#' + id).hide();

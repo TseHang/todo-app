@@ -16,12 +16,15 @@ Route::get('/welcome', function () {
 });
 
 Route::group(['middleware' => 'VerifyUser'], function () {
-    Route::get('/', function () {
-        return view('home');
-    });
 
-    Route::get('/login', 'AuthActionController@show');
+    Route::get('/', 'AuthActionController@index');
+    Route::get('/register', 'AuthActionController@registerPage'); 
+    Route::get('/logout', 'AuthActionController@logout'); 
     Route::post('/login', 'AuthActionController@login'); 
+    Route::post('/register', 'AuthActionController@register'); 
+    
+    Route::get('/showCookie', 'AuthActionController@showCookie');
+    Route::get('/session', 'AuthActionController@session');
 
     Route::get('/{user}/tasks', function ($user) {
         return view('tasks');
