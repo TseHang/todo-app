@@ -10,6 +10,9 @@
 |
 */
 
+
+// Todo: 把 tasks 分開！
+
 Route::get('/welcome', function () {
     return view('welcome');
 });
@@ -19,25 +22,40 @@ Route::group(['middleware' => 'VerifyUser'], function () {
     Route::get('/', 'AuthActionController@index');
     Route::get('/register', 'AuthActionController@registerPage'); 
     Route::get('/logout', 'AuthActionController@logout'); 
-    Route::post('/login', 'AuthActionController@login'); 
-    Route::post('/register', 'AuthActionController@register'); 
-    
-    Route::get('/showCookie', 'AuthActionController@showCookie');
-    Route::get('/session', 'AuthActionController@session');
-
-    Route::get('/{user}/tasks', function ($user) {
-        return view('tasks');
+    Route::get('/password/reset' , function() {
+        return view('auth.passwordReset', ['message' => false]);
     });
 
-    Route::resource('/tasks', 'TasksController')->except(['edit', 'show', 'create']);
+    Route::post('/login', 'AuthActionController@login'); 
+    Route::post('/register', 'AuthActionController@register'); 
+    Route::post('/password/reset', 'AuthActionController@password_reset');
+    Route::post('/{token}/password/reset', 'AuthActionController@reset');
+    // Route::get('/{name}/tasks', 'AuthActionController@showTasks');
+
+    Route::get('/{name}/tasks/read', 'TasksController@read');
+    Route::resource('/{name}/tasks', 'TasksController')->except(['edit', 'show', 'create']);
+
 });
 
 
 Route::get('register/verify/{confirmationCode}_email_verify', [
     'as' => 'register.verify.confirmation',
-    'uses' => 'AuthActionController@confirm'
+    'uses' => 'AuthActionController@confirm',
 ]);
 
+Route::get('password/reset/{token}_email_verify', function ($token) {
+    return view('auth.password.reset', [
+        'token' => $token,
+        'message' => 'Please reset your password!',
+    ]);
+});
+
+
+
+
+Route::get('/showToken', 'AuthActionController@showToken');
+Route::get('/showCookie', 'AuthActionController@showCookie');
+Route::get('/session', 'AuthActionController@session');
 
 Route::get('/clear', function() {
     session()->forget('todoApp');

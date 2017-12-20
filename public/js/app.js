@@ -77,22 +77,22 @@ module.exports = __webpack_require__(2);
 
 (function () {
   /*
-      [Function]: Add login/logout/sign-in
-      [Feature]: 點兩下編輯文字！！
-    */
+    [Feature]: 點兩下編輯文字！！
+  */
   var FETCH = self.fetch;
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  var USER_NAME = $('#username').text();
   var headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     'X-CSRF-TOKEN': CSRF_TOKEN
   };
   var transformToTaskRow = function transformToTaskRow(content, id, done) {
-    return '\n      <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + done + '">\n      <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n      <p class="task-description">' + content + '</p>\n      <button data-id="' + id + '" class="btn-delete-task">del</button>\n      </div>\n    ';
+    return '\n      <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + (done ? 'true' : 'false') + '">\n      <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n      <p class="task-description">' + content + '</p>\n      <button data-id="' + id + '" class="btn-delete-task">del</button>\n      </div>\n    ';
   };
 
   if (FETCH) {
-    fetch('/tasks', {
+    fetch('/' + USER_NAME + '/tasks/read', {
       headers: headers,
       method: 'GET'
     }).then(function (response) {
@@ -108,7 +108,7 @@ module.exports = __webpack_require__(2);
     $.ajaxSetup({
       headers: headers
     });
-    $.get('/tasks', function (response) {
+    $.get('/' + USER_NAME + '/tasks/read', function (response) {
       var taskList = response;
       initDataList(taskList);
       initFormFunction();
@@ -199,7 +199,7 @@ module.exports = __webpack_require__(2);
     });
 
     if (FETCH) {
-      fetch('/tasks', {
+      fetch('/' + USER_NAME + '/tasks', {
         headers: headers,
         method: 'POST',
         body: stringfyData,
@@ -211,7 +211,7 @@ module.exports = __webpack_require__(2);
       });
     } else {
       $.ajax({
-        url: '/tasks',
+        url: '/' + USER_NAME + '/tasks',
         type: 'POST',
         data: stringfyData,
         success: function success(response) {
@@ -223,21 +223,21 @@ module.exports = __webpack_require__(2);
 
   function deleteTask(taskId) {
     if (FETCH) {
-      fetch('/tasks/' + taskId, {
+      fetch('/' + USER_NAME + '/tasks/' + taskId, {
         headers: headers,
         method: 'DELETE',
         credentials: 'include' // cookie
       }).then(function (response) {
         return response.text();
       }).then(function (response) {
-        return console.log('The task ' + taskId + ' deleted ? : ' + (response ? 'true' : 'false'));
+        return console.log('The task ' + taskId + ' deleted ? : ' + response);
       });
     } else {
       $.ajax({
-        url: '/tasks/' + taskId,
+        url: '/' + USER_NAME + '/tasks/' + taskId,
         type: 'DELETE',
         success: function success(response) {
-          return console.log('The task ' + taskId + ' deleted ? : ' + (response ? 'true' : 'false'));
+          return console.log('The task ' + taskId + ' deleted ? : ' + response);
         }
       });
     }
@@ -245,7 +245,7 @@ module.exports = __webpack_require__(2);
 
   function updateTask(data, taskId) {
     if (FETCH) {
-      fetch('/tasks/' + taskId, {
+      fetch('/' + USER_NAME + '/tasks/' + taskId, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data),
@@ -253,15 +253,15 @@ module.exports = __webpack_require__(2);
       }).then(function (response) {
         return response.text();
       }).then(function (status) {
-        return console.log('Update: ' + (status ? 'true' : 'false'));
+        return console.log('Update: ' + status);
       });
     } else {
       $.ajax({
-        url: '/tasks/' + taskId,
+        url: '/' + USER_NAME + '/tasks/' + taskId,
         type: 'PUT',
         data: JSON.stringify(data),
         success: function success(status) {
-          return console.log('Update: ' + (status ? 'true' : 'false'));
+          return console.log('Update: ' + status);
         }
       });
     }

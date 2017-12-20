@@ -11,6 +11,7 @@
 </head>
 <body>
   <div class="container">
+    <p id="username">{{$username}}</p>
     <a href="/logout">Log out</a>
     <div class="date-container">
       <span class="date">

@@ -1,35 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
+<h1>重設密碼</h1>
 
-<h1>登入使用者</h1>
-
-{!! Form::open(['method'=>'POST', 'url'=> '/login']) !!}
+{!! Form::open(['method'=>'POST', 'url'=> '/' . $token . '/password/reset']) !!}
 
 {!! csrf_field() !!}
 
 <div class="form-group">
-	{!! Form::label('username: ', null, ['class' => 'username']) !!}
-	{!! Form::text('name'); !!}
+	{!! Form::label('新密碼: ', null, ['class' => 'password']) !!}
+	{!! Form::password('password'); !!}
 </div>
 
 <div class="form-group">
-	{!! Form::label('password: ', null, ['class' => 'password']) !!}
-	{!! Form::password('password', ['class' => 'password']); !!}
+	{!! Form::label('確認密碼: ', null, ['class' => 'confirm_password']) !!}
+	{!! Form::password('password_confirmation'); !!}
 </div>
-
 
 <div class="form-group">
 	<div class="yoyoman">
-		<button type="submit" class="btn">Login</button>
-
-		<a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+		<button type="submit" class="btn">確認</button>
 	</div>
 </div>
 
 {!! Form::close() !!}
+
 @include('includes.form_errors')
 @include('includes.message')
+
 
 {{--  <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
 	{!! csrf_field() !!}

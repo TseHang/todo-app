@@ -3,40 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\PasswordReset;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\UsersRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use App\Http\Requests\UsersRequest;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
-
-function CheckLoginDB ($username, $pwd, $table) {
-    $user = DB::table('users')->where([
-        ['name', $username],
-    ])->get();
-
-    if ($user->isEmpty()) return false;
-    
-    $user = $user->first();
-    return Hash::check($pwd, $user->password) ? $user : false;
-}
-
-
-function CheckLogin ($remember_token) {
-    return DB::table('users')->where('remember_token', $remember_token)->get()->first();
-}
-
-function FindRememberToken($cookie, $session) {
-    return $cookie ? $cookie : $session ? $session : false;
-}
-
-function UpdateRememberToken ($user) {
-    $remember_token = bcrypt(str_random(30));
-    $user->remember_token = $remember_token;
-    $user->save();
-    return (string) $remember_token;
-}
 
 class AuthActionController extends Controller
 {
@@ -47,26 +21,30 @@ class AuthActionController extends Controller
      */
     public function index(Request $request)
     {
-        $remember_token = FindRememberToken($request->cookie('todoApp'), $request->session()->get('todoApp'));
+        $remember_token = FindUserRememberToken($request->cookie('todoApp'), $request->session()->get('todoApp'));
         if (strlen($remember_token) > 0) {
-            if ($user = CheckLogin($remember_token)) {
+            if ($user = CheckUserLogin($remember_token)) {
                 return redirect('/' . $user->name . '/tasks');
             }
         }
-        return view('auth.login', ['login_description' => false]);
+        return view('auth.login', ['message' => false]);
     }
 
     public function login(Request $request)
     {
         $table = DB::table('users');
         if(!$user = CheckLoginDB($request->name, $request->password, $table)) {
-            return view('auth.login', ['login_description' => 'Wrong username or password!!']);
+            return view('auth.login', ['message' => 'Wrong username or password!!']);
         };
 
-        // Login Success
-        $session_todoApp = UpdateRememberToken(User::findOrFail($user->id));
-        session(['todoApp' => $session_todoApp]);
-        return redirect('/' . $user->name . '/tasks')->withCookie('todoApp', $session_todoApp);
+        if($user->confirmed) {
+            // Login Success
+            $session_todoApp = UpdateRememberToken(User::findOrFail($user->id));
+            session(['todoApp' => $session_todoApp]);
+            return redirect('/' . $user->name . '/tasks')->withCookie('todoApp', $session_todoApp);
+        }
+
+        return view('auth.login', ['message' => 'You have to verify your email to start your account!']);
         // [Ask]: return redirect()->route('/{user}/tasks', ['user' => $name]);
     }
 
@@ -77,12 +55,17 @@ class AuthActionController extends Controller
 
     public function register(UsersRequest $request)
     {
-        $confirmation_code = str_random(20);
-        User::create([
+        $confirmation_code = str_random(30);
+        $user = User::create([
             'name' => $request->name,
             'password' => Hash::make($request->password),
             'email' => $request->email,
             'confirmation_code' => $confirmation_code,
+        ]);
+
+        PasswordReset::create([
+            'email' => $request->email,
+            'token' => str_random(30),
         ]);
 
         $data = [
@@ -96,7 +79,7 @@ class AuthActionController extends Controller
             $message->to($data['email'], $data['username'])->subject('[Todo Yo~] Verify your email address!');
         });
 
-        return redirect('/');
+        return view('auth.login', ['message' => 'Please verified your account, then login!!']);
     }
 
 
@@ -111,8 +94,49 @@ class AuthActionController extends Controller
         $user->confirmation_code = null;
         $user->save();
 
-        return view('auth.login', ['login_description' => 'You have successfully verified your account. Please Login']);
+        return view('auth.login', ['message' => 'You have successfully verified your account. Please Login']);
     } 
+
+
+    public function password_reset (Request $request) {        
+        $user = User::where([
+            ['name', $request->name],
+            ['email', $request->email],
+        ])->first();
+
+        if(!$user) {
+            return view('auth.passwordReset', ['message' => 'Wrong email or username!']);
+        }
+
+        $token = $user->password_resets->token;
+
+        $data = [
+            'token' => $token,
+            'username' => $user->name,
+            'email' => $user->email,
+        ];
+
+        // when using a closure (anonymous function), `use ($data)`
+        Mail::send('email.password_reset', $data, function ($message) use ($data) {
+            $message->to($data['email'], $data['username'])->subject('[Todo Yo~] Reset your password!');
+        });
+
+        return view('message', ['message' => 'Please check your email to reset password!']);
+    }
+
+
+    public function reset(Request $request, $token) {
+        $user = PasswordReset::where('token', $token)->first()->user;
+        
+        if (!$user) {
+            return view('errors.404');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return view('/message', ['message' => '設置成功！']);
+    }
 
     public function registerPage()
     {
@@ -127,6 +151,10 @@ class AuthActionController extends Controller
         return session()->all();
         // return $request->session()->flush();
         // return view('auth.login', ['login_description' => 'You have successfully verified your account. Please Login']);
+    }
+
+    public function showToken() {
+        return User::find(18)->password_resets? 'true' : 'false';
     }
 
 

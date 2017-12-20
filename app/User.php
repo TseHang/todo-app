@@ -31,4 +31,8 @@ class User extends Authenticatable
     protected function tasks () {
         return $this->hasMany('App\Tasks');
     }
+
+    protected function password_resets() {
+        return $this->hasOne('App\PasswordReset', 'email', 'email');
+    }
 }

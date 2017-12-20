@@ -1,10 +1,10 @@
 (() => {
   /*
-      [Function]: Add login/logout/sign-in
-      [Feature]: 點兩下編輯文字！！
-    */
+    [Feature]: 點兩下編輯文字！！
+  */
   const FETCH = self.fetch;
   const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  const USER_NAME = $('#username').text();
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -12,7 +12,7 @@
   };
   const transformToTaskRow = (content, id, done) => (
     `
-      <div class="task-row ${done ? 'hidden' : ''}" id="${id}" data-done = "${done}">
+      <div class="task-row ${done ? 'hidden' : ''}" id="${id}" data-done = "${done ? 'true' : 'false'}">
       <input type="checkbox" name="" data-id="${id}" class="checkbox" ${done ? 'checked' : ''}>
       <p class="task-description">${content}</p>
       <button data-id="${id}" class="btn-delete-task">del</button>
@@ -21,7 +21,7 @@
   );
 
   if (FETCH) {
-    fetch('/tasks', {
+    fetch(`/${USER_NAME}/tasks/read`, {
       headers,
       method: 'GET',
     })
@@ -37,7 +37,7 @@
     $.ajaxSetup({
       headers,
     });
-    $.get('/tasks', (response) => {
+    $.get(`/${USER_NAME}/tasks/read`, (response) => {
       const taskList = response;
       initDataList(taskList);
       initFormFunction();
@@ -73,9 +73,7 @@
       $('html, body').animate(
         {
           scrollTop: $(`.task-row#${newId}`).offset().top,
-        },
-        500,
-        'swing',
+        }, 500, 'swing',
       );
     }
   }
@@ -133,7 +131,7 @@
     });
 
     if (FETCH) {
-      fetch('/tasks', {
+      fetch(`/${USER_NAME}/tasks`, {
         headers,
         method: 'POST',
         body: stringfyData,
@@ -143,7 +141,7 @@
         .then(data => cb(data.id));
     } else {
       $.ajax({
-        url: '/tasks',
+        url: `/${USER_NAME}/tasks`,
         type: 'POST',
         data: stringfyData,
         success: response => cb(response.id),
@@ -153,7 +151,7 @@
 
   function deleteTask(taskId) {
     if (FETCH) {
-      fetch(`/tasks/${taskId}`, {
+      fetch(`/${USER_NAME}/tasks/${taskId}`, {
         headers,
         method: 'DELETE',
         credentials: 'include', // cookie
@@ -161,16 +159,16 @@
         .then(response => response.text())
         .then(response =>
           console.log(
-            `The task ${taskId} deleted ? : ${response ? 'true' : 'false'}`,
+            `The task ${taskId} deleted ? : ${response}`,
           ),
         );
     } else {
       $.ajax({
-        url: `/tasks/${taskId}`,
+        url: `/${USER_NAME}/tasks/${taskId}`,
         type: 'DELETE',
         success: response =>
           console.log(
-            `The task ${taskId} deleted ? : ${response ? 'true' : 'false'}`,
+            `The task ${taskId} deleted ? : ${response}`,
           ),
       });
     }
@@ -178,20 +176,20 @@
 
   function updateTask(data, taskId) {
     if (FETCH) {
-      fetch(`/tasks/${taskId}`, {
+      fetch(`/${USER_NAME}/tasks/${taskId}`, {
         headers,
         method: 'PUT',
         body: JSON.stringify(data),
         credentials: 'include', // cookie
       })
         .then(response => response.text())
-        .then(status => console.log(`Update: ${status ? 'true' : 'false'}`));
+        .then(status => console.log(`Update: ${status}`));
     } else {
       $.ajax({
-        url: `/tasks/${taskId}`,
+        url: `/${USER_NAME}/tasks/${taskId}`,
         type: 'PUT',
         data: JSON.stringify(data),
-        success: status => console.log(`Update: ${status ? 'true' : 'false'}`),
+        success: status => console.log(`Update: ${status}`),
       });
     }
   }

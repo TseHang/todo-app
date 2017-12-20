@@ -13,9 +13,21 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $name)
     {
-        $query = User::findOrFail(1)->tasks->all();
+        $id = User::where('name', $name)->first()->id;
+        $remember_token = FindUserRememberToken($request->cookie('todoApp'), $request->session()->get('todoApp'));
+        if (strlen($remember_token) > 0) {
+            return view('tasks', [
+                'id' => $id,
+                'username' => $name,
+            ]);
+        }
+        return redirect('/');
+    }
+
+    public function read($name) {
+        $query = User::where('name', $name)->first()->tasks->all();
         return $query;
     }
 
@@ -35,10 +47,9 @@ class TasksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $name)
     {
-        
-        $request['user_id'] = 1;
+        $request['user_id'] = User::where('name', $name)->first()->id;
         $input = Tasks::create($request->all());
         return $input;
     }
@@ -51,7 +62,7 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -72,9 +83,9 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $name, $taskId)
     {
-        $updated = Tasks::find($id)->update($request->all());
+        $updated = Tasks::find($taskId)->update($request->all());
         return (string) $updated;
     }
 
@@ -84,8 +95,8 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($task_id)
+    public function destroy($name, $taskId)
     {
-        return (string) Tasks::findOrFail($task_id)->delete();
+        return (string) Tasks::findOrFail($taskId)->delete();
     }
 }

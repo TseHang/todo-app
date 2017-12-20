@@ -1,35 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
+<h1>忘記您的密碼了嗎？</h1>
 
-<h1>登入使用者</h1>
-
-{!! Form::open(['method'=>'POST', 'url'=> '/login']) !!}
+{!! Form::open(['method'=>'POST', 'url'=> '/password/reset']) !!}
 
 {!! csrf_field() !!}
 
 <div class="form-group">
-	{!! Form::label('username: ', null, ['class' => 'username']) !!}
-	{!! Form::text('name'); !!}
+	{!! Form::label('輸入您的 E-mail 地址: ', null, ['class' => 'email']) !!}
+	{!! Form::email('email'); !!}
 </div>
 
 <div class="form-group">
-	{!! Form::label('password: ', null, ['class' => 'password']) !!}
-	{!! Form::password('password', ['class' => 'password']); !!}
+	{!! Form::label('使用者名子: ', null, ['class' => 'username']) !!}
+	{!! Form::text('name'); !!}
 </div>
 
 
 <div class="form-group">
 	<div class="yoyoman">
-		<button type="submit" class="btn">Login</button>
+		<button type="submit" class="btn">確認</button>
 
-		<a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+		<a class="btn btn-link" href="{{ url('/') }}">返回</a>
 	</div>
 </div>
 
 {!! Form::close() !!}
+
 @include('includes.form_errors')
 @include('includes.message')
+
 
 {{--  <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
 	{!! csrf_field() !!}
