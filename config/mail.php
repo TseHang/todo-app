@@ -1,5 +1,9 @@
 <?php
 
+$mail_driven = getenv('MAIL_DRIVER');
+$mail_from_address = getenv('MAIL_FROM_ADDRESS');
+$mail_from_name = getenv('MAIL_FROM_NAME');
+
 return [
 
     /*
@@ -16,7 +20,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', $mail_driven),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +60,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', $mail_from_address),
+        'name' => env('MAIL_FROM_NAME', $mail_from_name),
     ],
 
     /*

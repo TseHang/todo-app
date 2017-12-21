@@ -1,5 +1,8 @@
 <?php
 
+$mailgun_domain = getenv('MAILGUN_DOMAIN');
+$mailgun_secret = getenv('MAILGUN_SECRET');
+
 return [
 
     /*
@@ -15,8 +18,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain' => $mailgun_domain,
+        'secret' => $mailgun_secret,
     ],
 
     'ses' => [
