@@ -49,11 +49,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => $hostname,
+            'host' => env('DB_HOST', $hostname),
             'port' => env('DB_PORT', '3306'),
-            'database' => $database,
-            'username' => $username ,
-            'password' => $password,
+            'database' => env('DB_DATABASE', $database),
+            'username' => env('DB_USERNAME', $username),
+            'password' => env('DB_PASSWORD', $password),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

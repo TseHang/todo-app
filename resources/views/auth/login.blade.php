@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>登入使用者</h1>
+<h1>登入</h1>
 
 {!! Form::open(['method'=>'POST', 'url'=> '/login']) !!}
 

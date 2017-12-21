@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>註冊使用者</h1>
+<h1>註冊</h1>
 
 {!! Form::open(['method'=>'POST', 'url'=> '/register']) !!}
 
