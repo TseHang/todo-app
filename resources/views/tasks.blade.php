@@ -4,7 +4,6 @@
 <head>
 
   @include('includes.head')
-  {{--  <!-- <title> Todo/{{Auth::user()->name}} </title> -->  --}}
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href = "{{asset('css/app.css')}}">
   <title>Todo Tasks</title>

@@ -76,10 +76,10 @@ class AuthActionController extends Controller
 
         // when using a closure (anonymous function), `use ($data)`
         Mail::send('email.verify', $data, function ($message) use ($data) {
-            $message->to($data['email'], $data['username'])->subject('[Todo Yo~] Verify your email address!');
+            $message->to($data['email'], $data['username'])->subject('[Todo Yo] Verify your email address!');
         });
 
-        return view('auth.login', ['message' => 'Please verified your account, then login!!']);
+        return view('message', ['message' => 'Please verified your account, then login!!']);
     }
 
 
@@ -118,7 +118,7 @@ class AuthActionController extends Controller
 
         // when using a closure (anonymous function), `use ($data)`
         Mail::send('email.password_reset', $data, function ($message) use ($data) {
-            $message->to($data['email'], $data['username'])->subject('[Todo Yo~] Reset your password!');
+            $message->to($data['email'], $data['username'])->subject('[Todo Yo] Reset your password!');
         });
 
         return view('message', ['message' => 'Please check your email to reset password!']);
@@ -126,16 +126,18 @@ class AuthActionController extends Controller
 
 
     public function reset(Request $request, $token) {
-        $user = PasswordReset::where('token', $token)->first()->user;
+        $password_reset_raw = PasswordReset::where('token', $token)->first();
         
-        if (!$user) {
-            return view('errors.404');
-        }
+        if (!$password_reset_raw) return view('errors.404');
 
+        $user = $password_reset_raw->user;
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return view('/message', ['message' => '設置成功！']);
+        // update token
+        DB::update('update password_resets set token = ? where email = ?', [str_random(30), 'a54383813@gmail.com']);
+
+        return view('/message', ['message' => $password_reset_raw->token]);
     }
 
     public function registerPage()

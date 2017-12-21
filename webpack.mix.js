@@ -18,3 +18,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
       `${__dirname}/node_modules/normalize-scss/sass` ,
     ]
   });
+
+mix.js('resources/assets/js/message.js', 'public/js')
