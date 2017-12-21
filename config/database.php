@@ -1,5 +1,13 @@
 <?php
 
+$url = getenv('JAWSDB_MARIA_URL');
+$dbparts = parse_url($url);
+
+$hostname = $dbparts['host'];
+$username = $dbparts['user'];
+$password = $dbparts['pass'];
+$database = substr($dbparts['path'], 1);
+
 return [
 
     /*
@@ -41,11 +49,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => $hostname,
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => $database,
+            'username' => $username ,
+            'password' => $password,
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
