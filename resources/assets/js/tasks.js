@@ -70,11 +70,9 @@
     });
 
     function slideToNewTask(newId) {
-      $('html, body').animate(
-        {
-          scrollTop: $(`.task-row#${newId}`).offset().top,
-        }, 500, 'swing',
-      );
+      $('html, body').animate({
+        scrollTop: $(`.task-row#${newId}`).offset().top,
+      }, 500, 'swing');
     }
   }
 

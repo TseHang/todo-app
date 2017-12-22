@@ -1,6 +1,7 @@
 # To-do App
 
 ### 更新紀錄
+- [12/22] 完成基本所有功能，等待 mail server 驗證中 
 - [12/08] 完成 CRUD 基本功能，與前端介面整合，並加上 with done 功能。然後把前端全部改成 fetch request。
 - [12/07] 解掉 500(Internal server error) 問題，最後發現是 request type 問題。
 - [12/06] 嘗試串接 API，遇到 Http 500 (Internal-server-error)
@@ -78,3 +79,39 @@
 1. 註冊時檢查 email 所有權（例如寄出認證信）
 2. 實作後端推播功能，當兩個瀏覽器頁面同時開啟時，頁面1更新狀態，頁面2也要同步更新
 3. 實作防註冊機器人功能，例如 reCAPTCHA、限制請求次數...皆可
+
+
+## API doc
+
+#### Read 取得清單
+- Endpoint
+    - https://todoyo.herokuapp.com/{username}/tasks/read
+- Method
+    - get
+- Parameters
+    - none
+
+#### Create 新增任務
+- Endpoint
+    - https://todoyo.herokuapp.com/{username}/tasks/
+- Method
+    - post
+- Parameters
+    - content: 字串
+
+#### Update 修改任務
+- Endpoint
+    - https://todoyo.herokuapp.com/{username}/tasks/{taskId}
+- Method
+    - put
+- Parameters
+    - is_done: 布林，僅接受 1, 0, true, false 
+
+#### Delete 刪除任務
+- Endpoint
+    - https://todoyo.herokuapp.com/{username}/tasks/{taskId}
+- Method
+    - delete
+- Parameters
+    - none
+
