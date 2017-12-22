@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'OOXX%%%666666666')
 @section('css')
-	<link rel="stylesheet" href = "{{asset('css/app.css')}}">
+	<link rel="stylesheet" href = "{{asset('css/app.css'), env('REDIRECT_HTTPS')}}">
 @endsection
 @section('js')
 	<script type="text/javascript" src="{{asset('js/message.js')}}"></script>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'OOPS!')
 @section('css')
-	<link rel="stylesheet" href = "{{asset('css/app.css')}}">
+	<link rel="stylesheet" href = "{{asset('css/app.css', env('REDIRECT_HTTPS'))}}">
 @endsection
 @section('content')
     <div class="container">

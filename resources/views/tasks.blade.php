@@ -2,7 +2,7 @@
 @section('title', $username)
 
 @section('css')
-  <link rel="stylesheet" href = "{{asset('css/tasks.css')}}">
+  <link rel="stylesheet" href = "{{asset('css/tasks.css', env('REDIRECT_HTTPS'))}}">
 @endsection
 
 @section('js')
