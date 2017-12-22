@@ -24,6 +24,13 @@ a {
   }
 }
 
+input {
+  &:-webkit-autofill {
+    -webkit-text-fill-color: map-get($color-todo, drab) !important;
+    -webkit-box-shadow: 0 0 0 30px map-get($color-todo, light-grey-two) inset !important;
+  }
+}
+
 em {
   font-style: normal;
 }

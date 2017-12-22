@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+@extends('layouts.app')
+@section('title', $username)
 
-<html style = "height:100%;width:100%;margin:0px;">
-<head>
+@section('css')
+  <link rel="stylesheet" href = "{{asset('css/tasks.css')}}">
+@endsection
 
-  @include('includes.head')
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href = "{{asset('css/app.css')}}">
-  <title>Todo Tasks</title>
-</head>
-<body>
+@section('js')
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{asset('js/tasks.js')}}"></script>
+@endsection
+
+@section('content')
   <div class="container">
-    <p id="username">{{$username}}</p>
-    <a href="/logout">Log out</a>
     <div class="date-container">
       <span class="date">
         24
@@ -37,7 +37,4 @@
       <p class="task-description">Done</p>
     </div>
   </div>
-</body>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
-</html>
+@endsection

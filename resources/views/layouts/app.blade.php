@@ -1,29 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style = "height:100%;width:100%;margin:0px;">
 <head>
-    
     @include('includes.head')
-    <title>Todo</title>
+    @yield('css')
+    <title>Todoyo~  @yield('title')</title>
 </head>
-<body id="app-layout">
-    <nav class="navbar">
-        <div class="container">
-
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Home</a></li>
-                </ul>
-
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    <li><a href="{{ url('/register') }}">Register</a></li>
-                </ul>
-            </div>
-        </div>
+<body>
+    <nav class="navbar ">
+        @if (session('todoApp'))
+            <a id="username" class="link" href="{{ url('/') }}">{{$username}}</a>
+            <a class="link" href="{{ url('/logout') }}">Logout</a>
+        @else
+            <a class="link" href="{{ url('/') }}">Home</a>
+            <a class="link" href="{{ url('/register') }}">Register</a>
+        @endif
     </nav>
 
     @yield('content')
+    @yield('js')
 </body>
 </html>

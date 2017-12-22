@@ -12,11 +12,14 @@ let mix = require('laravel-mix');
  */
 
 //  Mix run 'Auto-prefixer', Es6, basically.
-mix.js('resources/assets/js/app.js', 'public/js')
+mix
+  .sass('resources/assets/sass/tasks.scss', 'public/css', {
+    includePaths: [`${__dirname}/node_modules/normalize-scss/sass`],
+  })
   .sass('resources/assets/sass/app.scss', 'public/css', {
-    includePaths: [
-      `${__dirname}/node_modules/normalize-scss/sass` ,
-    ]
+    includePaths: [`${__dirname}/node_modules/normalize-scss/sass`],
   });
 
-mix.js('resources/assets/js/message.js', 'public/js')
+mix
+  .js('resources/assets/js/tasks.js', 'public/js')
+  .js('resources/assets/js/message.js', 'public/js');

@@ -10,9 +10,6 @@
 |
 */
 
-
-// Todo: 把 tasks 分開！
-
 Route::get('/welcome', function () {
     return view('welcome');
 });

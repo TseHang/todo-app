@@ -1,0 +1,108 @@
+@import 'default/default';
+
+.date-container {
+  margin-bottom: 19px;
+  font-size: 24px;
+  margin: 3.2% 0 2.1%;
+  font-family: $font-PingFangSB;
+
+  .date {
+  }
+
+  .month {
+  }
+
+  .year {
+  }
+
+  .day {
+  }
+}
+
+.input-container {
+  width: 100%;
+  height: 48px;
+
+  .input-task {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+    border: 2px solid map-get($color-todo, drab);
+    box-shadow: none;
+    font-size: 24px;
+    font-family: $font-PingFangR;
+    padding: 0 0.5em;
+
+    box-sizing: border-box;
+    color: map-get($color-todo, drab);
+    &::placeholder {
+      color: map-get($color-todo, drab);
+    }
+    
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.task-container {
+  padding: 13px 0;
+  max-height: 49vh;
+  overflow: scroll;
+}
+
+.task-row {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 32px;
+  font-family: $font-PingFangR;
+  border-bottom: solid 1px;
+  position: relative;
+
+  .checkbox {
+    margin: 1.8% 0;
+    zoom: 2;
+    background: white;
+    border: 1px solid map-get($color-todo, drab);
+    border-radius: 4px;
+    font-size: 33px;
+  }
+  .task-description {
+    margin: 0;
+    max-width: 418px;
+    word-wrap: break-word;
+  }
+  .btn-delete-task {
+    margin: 1.8% 0 14.5px 0;
+    width: 63px;
+    height: 32px;
+    background: map-get($color-todo, drab);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+  }
+}
+
+@media (min-width: map-get($break-point, table-l)) {
+  .container {
+    width: 750px;
+    min-height: 608px;
+  }
+
+  .date-container {
+    font-size: 48px;
+  }
+
+  .task-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: none;
+
+    .btn-delete-task {
+      width: auto;
+    }
+  }
+}

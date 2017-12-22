@@ -1,82 +1,37 @@
 @extends('layouts.app')
+@section('title', '重設密碼')
+@section('css')
+	<link rel="stylesheet" href = "{{asset('css/app.css')}}">
+@endsection
+
 
 @section('content')
-<h1>重設密碼</h1>
+<div class="container">
+	<div class="block">
+		<h3>重設密碼</h3>
 
-{!! Form::open(['method'=>'POST', 'url'=> '/' . $token . '/password/reset']) !!}
+		{!! Form::open(['method'=>'POST', 'url'=> '/' . $token . '/password/reset']) !!}
 
-{!! csrf_field() !!}
+		{!! csrf_field() !!}
 
-<div class="form-group">
-	{!! Form::label('新密碼: ', null, ['class' => 'password']) !!}
-	{!! Form::password('password'); !!}
+		<div class="form-group">
+			{!! Form::label('新密碼: ', null, ['class' => 'label']) !!}
+			{!! Form::password('password'); !!}
+		</div>
+
+		<div class="form-group">
+			{!! Form::label('確認密碼: ', null, ['class' => 'label']) !!}
+			{!! Form::password('password_confirmation'); !!}
+		</div>
+
+		<div class="form-group">
+			<button type="submit" class="btn">確認</button>
+		</div>
+
+		{!! Form::close() !!}
+
+		@include('includes.form_errors')
+		@include('includes.message')
+	</div>
 </div>
-
-<div class="form-group">
-	{!! Form::label('確認密碼: ', null, ['class' => 'confirm_password']) !!}
-	{!! Form::password('password_confirmation'); !!}
-</div>
-
-<div class="form-group">
-	<div class="yoyoman">
-		<button type="submit" class="btn">確認</button>
-	</div>
-</div>
-
-{!! Form::close() !!}
-
-@include('includes.form_errors')
-@include('includes.message')
-
-
-{{--  <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-	{!! csrf_field() !!}
-
-	<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-		<label class="col-md-4 control-label">E-Mail Address</label>
-
-		<div class="col-md-6">
-			<input type="email" class="form-control" name="email" value="{{ old('email') }}">
-            @if ($errors->has('email'))
-			<span class="help-block">
-				<strong>{{ $errors->first('email') }}</strong>
-			</span>
-			@endif
-		</div>
-	</div>
-
-	<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-		<label class="col-md-4 control-label">Password</label>
-
-		<div class="col-md-6">
-			<input type="password" class="form-control" name="password">
-            @if ($errors->has('password'))
-			<span class="help-block">
-				<strong>{{ $errors->first('password') }}</strong>
-			</span>
-			@endif
-		</div>
-	</div>
-
-	<div class="form-group">
-		<div class="col-md-6 col-md-offset-4">
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" name="remember"> Remember Me
-				</label>
-			</div>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<div class="col-md-6 col-md-offset-4">
-			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-btn fa-sign-in"></i>Login
-			</button>
-
-			<a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
-		</div>
-	</div>
-</form>  --}}
-
 @endsection

@@ -1,5 +1,5 @@
 @if($message)
-<div class="alert alert-danger">
-	<h1>{{$message}}</h1>
-</div>
+<ul class="message">
+	<li class="color-red-pink">{{$message}}</li>
+</li>
 @endif

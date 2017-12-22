@@ -1,7 +1,63 @@
-@import "normalize";
+@import 'normalize';
 @include normalize();
-@import "variable";
-@import "mixin";
-@import "extend";
-@import "base";
-@import "component";
+@import 'variable';
+@import 'mixin';
+@import 'extend';
+@import 'base';
+@import 'component';
+
+$container_width: 97.8%;
+
+body {
+  background-color: map-get($color-todo, drab);
+  color: map-get($color-todo, drab);
+  height: 100vh;
+}
+
+hr {
+  background-color: map-get($color-todo, drab);
+  border: none;
+  height: 2px;
+}
+
+
+input {
+  color: map-get($color-todo, drab);
+  background-color: transparent;
+  border-style: none;
+  border-bottom: solid 1px map-get($color-todo, drab);
+  &:focus {
+    outline: none;
+  }
+  &:-webkit-autofill {
+    -webkit-text-fill-color: map-get($color-todo, drab) !important;
+    -webkit-box-shadow: 0 0 0 30px map-get($color-todo, light-grey-two) inset !important;
+  }
+}
+
+.container {
+  background-color: map-get($color-todo, light-grey-two);
+  box-sizing: border-box;
+  width: $container_width;
+  min-height: 96.4%;
+  margin: 1em auto;
+  padding: 3.2% 8.1%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  color: map-get($color-todo, light-grey-two);
+  width: $container_width;
+  font-size: .7em;
+  margin: 1em auto;
+
+  @media (min-width: map-get($break-point, table-l)) {
+    justify-content: center;
+    > a {
+      margin: 0 1em;
+    }
+  }
+}
