@@ -10,10 +10,6 @@
 |
 */
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
-
 Route::group(['middleware' => 'VerifyUser'], function () {
 
     Route::get('/', 'AuthActionController@index');
