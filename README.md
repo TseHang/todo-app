@@ -14,13 +14,13 @@
 - （ˇ）Build/set db structure.
 - （ˇ）Implement CRUD.
 - （ˇ）Implement recording items whether it have done.
-- （ ）Implement account system(Log-in / Log-out / Sign-in/).
-- （ ）Implement 規格(No.5).
-- （ ）Implement 規格(No.6).
-- （ ）Create server.
-- （ ）Deploy into server
-- （ ）Combine with frontend interface.
-- （ ）**Upgrade(web security)** - Check Email
+- （ˇ）Implement account system(Log-in / Log-out / Sign-in/).
+- （ˇ）Implement 規格(No.5).
+- （ˇ）Implement 規格(No.6).
+- （ˇ）Create server.
+- （ˇ）Deploy into server
+- （ˇ）Combine with frontend interface.
+- （ˇ）**Upgrade(web security)** - Check Email
 - （ ）**Upgrade(web security)** - Disallow auto-sign-robot.(reCAPTCHA、限制請求次數)
 - （ ）**Upgrade(function)** - Real-time update in frontend(Pushing notification in backend)
 
@@ -39,6 +39,24 @@
 2. fetch Post & Put & Delete 問題 (Get 卻沒問題＠＠):
 懷疑跟 laravel 安全性，cookies 有關。
 最後在 init 加上 `credentials: 'include'` 就可以了。
+
+3. session & token & confirmation_code
+這三個是在設計後端跟接資料的時候做的最麻煩的地方，
+一直在思考應該怎麼樣接可比較隱密又好，了解一般流程之後
+試著自己實做幾次，最後終於做出來。
+
+4. mail server
+問題出自於，一開始寄信都可以很順。直到我開始測試寄給不是我自己以外的人之後，我發現就無法寄信了。
+最後原來是我使用的 mail server 只是測試帳號 for free，所以只能寄給自己。
+於是我用我的 domain 去申請驗證。（還在等待）
+
+5. http->https 問題
+不知道為什麼始終吃不到 env('REDIRECT_HTTPS') 這個變數。
+一度想要每個都加上 secure_asset(...)
+可是又發現 url(...) 也有這個問題。
+
+最後終於找到在 local 端讓他讀 .env 檔案判斷環境，
+在 remote 端，使用 default 給他，使他判斷讀取 https。
 
 ---
 
