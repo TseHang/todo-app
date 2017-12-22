@@ -23,7 +23,6 @@ Route::group(['middleware' => 'VerifyUser'], function () {
     Route::post('/register', 'AuthActionController@register'); 
     Route::post('/password/reset', 'AuthActionController@password_reset');
     Route::post('/{token}/password/reset', 'AuthActionController@reset');
-    // Route::get('/{name}/tasks', 'AuthActionController@showTasks');
 
     Route::get('/{name}/tasks/read', 'TasksController@read');
     Route::resource('/{name}/tasks', 'TasksController')->except(['edit', 'show', 'create']);
@@ -41,27 +40,4 @@ Route::get('password/reset/{token}_email_verify', function ($token) {
         'token' => $token,
         'message' => 'Please reset your password!',
     ]);
-});
-
-
-
-
-Route::get('/showToken', 'AuthActionController@showToken');
-Route::get('/showCookie', 'AuthActionController@showCookie');
-Route::get('/session', 'AuthActionController@session');
-
-Route::get('/clear', function() {
-    session()->forget('todoApp');
-    return redirect('/')->withCookie(Cookie::forget('todoApp'));
-});
-
-Route::get('/mailTest', function () {
-    $data = [
-        'title' => 'Hihi~~',
-        'content' => 'This is content',
-    ];
-
-    Mail::send('email.test', $data, function ($message) {
-        $message->to('a54383813@gmail.com', 'Henry')->subject('Hello stident, how r u');
-    });
 });

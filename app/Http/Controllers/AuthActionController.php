@@ -144,20 +144,4 @@ class AuthActionController extends Controller
     {
         return view('auth.register');
     }
-
-    public function showCookie(Request $request) {
-        return $request->cookie();
-    }
-
-    public function session(Request $request) {
-        return session()->all();
-        // return $request->session()->flush();
-        // return view('auth.login', ['login_description' => 'You have successfully verified your account. Please Login']);
-    }
-
-    public function showToken() {
-        return User::find(18)->password_resets? 'true' : 'false';
-    }
-
-
 }
