@@ -7,6 +7,23 @@
 
 @section('js')
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    ((date) => {
+      const weekDay = [
+        'Sun.',
+        'Mon.',
+        'Tue.',
+        'Wed.',
+        'Thu.',
+        'Fri.',
+        'Sat.',
+      ];
+      $('.date').text(date.getDate());
+      $('.month').text(date.getMonth() + 1);
+      $('.year').text(date.getFullYear());
+      $('.day').text(weekDay[date.getDay()]);
+    })(new Date())
+  </script>
   <script type="text/javascript" src="{{asset('js/tasks.js')}}"></script>
 @endsection
 

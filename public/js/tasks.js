@@ -77,9 +77,6 @@ module.exports = __webpack_require__(3);
 /***/ (function(module, exports) {
 
 (function () {
-  /*
-    [Feature]: 點兩下編輯文字！！
-  */
   var FETCH = self.fetch;
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var USER_NAME = $('#username').text();
@@ -89,7 +86,7 @@ module.exports = __webpack_require__(3);
     'X-CSRF-TOKEN': CSRF_TOKEN
   };
   var transformToTaskRow = function transformToTaskRow(content, id, done) {
-    return '\n      <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + (done ? 'true' : 'false') + '">\n      <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n      <p class="task-description">' + content + '</p>\n      <button data-id="' + id + '" class="btn-delete-task">del</button>\n      </div>\n    ';
+    return '\n      <div class="task-row ' + (done ? 'hidden' : '') + '" id="' + id + '" data-done = "' + (done ? 'true' : 'false') + '">\n      <input type="checkbox" name="" data-id="' + id + '" class="checkbox" ' + (done ? 'checked' : '') + '>\n      <div data-id="' + id + '" class="task-des-div">\n        <p data-id="' + id + '" class="task-description">' + content + '</p>\n        <input type="text" data-id="' + id + '" class="update-input" placeholder="">\n      </div>\n      <button data-id="' + id + '" class="btn-delete-task">del</button>\n      </div>\n    ';
   };
 
   if (FETCH) {
@@ -132,22 +129,20 @@ module.exports = __webpack_require__(3);
       var keycode = event.keyCode ? event.keyCode : event.which;
       if (keycode === 13) {
         var content = $(this).val();
-        createTask(content, function (newId) {
-          return insertToContainer(content, newId);
-        });
-        $(this).val('');
+        if (content.trim().length === 0) {
+          alert('不能輸入 "空字串/只有空格"');
+        } else {
+          createTask(content, function (newId) {
+            return insertToContainer(content, newId);
+          });
+          $(this).val('');
+        }
       }
     });
 
     $('#with-done').on('click', function () {
       $('[data-done="true"]').toggleClass('hidden');
     });
-
-    function slideToNewTask(newId) {
-      $('html, body').animate({
-        scrollTop: $('.task-row#' + newId).offset().top
-      }, 500, 'swing');
-    }
   }
 
   function setTaskRawFunction() {
@@ -171,6 +166,24 @@ module.exports = __webpack_require__(3);
         $taskRow.attr('data-done', 'false');
       }
       updateTask(data, taskId);
+    });
+
+    $('.task-container').on('dblclick', '.task-des-div', function () {
+      var id = $(this).data('id');
+      if ($(this).hasClass('updating')) {
+        var content = $('.update-input[data-id=\'' + id + '\']').val();
+        $('.task-description[data-id=\'' + id + '\']').text(content);
+        if (content.trim().length === 0) {
+          alert('不能輸入 "空字串/只有空格"');
+        } else {
+          updateTask({ content: content }, id);
+          $(this).toggleClass('updating');
+        }
+      } else {
+        var value = $('.task-description[data-id=\'' + id + '\']').text();
+        $('.update-input[data-id=\'' + id + '\']').val(value);
+        $(this).toggleClass('updating');
+      }
     });
 
     function slideRightAnimation($taskRow, withDoneStatus) {

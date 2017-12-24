@@ -1,7 +1,4 @@
 (() => {
-  /*
-    [Feature]: 點兩下編輯文字！！
-  */
   const FETCH = self.fetch;
   const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   const USER_NAME = $('#username').text();
@@ -14,7 +11,10 @@
     `
       <div class="task-row ${done ? 'hidden' : ''}" id="${id}" data-done = "${done ? 'true' : 'false'}">
       <input type="checkbox" name="" data-id="${id}" class="checkbox" ${done ? 'checked' : ''}>
-      <p class="task-description">${content}</p>
+      <div data-id="${id}" class="task-des-div">
+        <p data-id="${id}" class="task-description">${content}</p>
+        <input type="text" data-id="${id}" class="update-input" placeholder="">
+      </div>
       <button data-id="${id}" class="btn-delete-task">del</button>
       </div>
     `
@@ -57,23 +57,21 @@
 
   function initFormFunction() {
     $('.input-task').keypress(function(event) {
-      let keycode = event.keyCode ? event.keyCode : event.which;
+      const keycode = event.keyCode ? event.keyCode : event.which;
       if (keycode === 13) {
         const content = $(this).val();
-        createTask(content, newId => insertToContainer(content, newId));
-        $(this).val('');
+        if (content.trim().length === 0) {
+          alert('不能輸入 "空字串/只有空格"');
+        } else {
+          createTask(content, newId => insertToContainer(content, newId));
+          $(this).val('');
+        }
       }
     });
 
     $('#with-done').on('click', function() {
       $('[data-done="true"]').toggleClass('hidden');
     });
-
-    function slideToNewTask(newId) {
-      $('html, body').animate({
-        scrollTop: $(`.task-row#${newId}`).offset().top,
-      }, 500, 'swing');
-    }
   }
 
   function setTaskRawFunction() {
@@ -97,6 +95,24 @@
         $taskRow.attr('data-done', 'false');
       }
       updateTask(data, taskId);
+    });
+
+    $('.task-container').on('dblclick', '.task-des-div', function () {
+      const id = $(this).data('id');
+      if ($(this).hasClass('updating')) {
+        const content = $(`.update-input[data-id='${id}']`).val();
+        $(`.task-description[data-id='${id}']`).text(content);
+        if (content.trim().length === 0) {
+          alert('不能輸入 "空字串/只有空格"');
+        } else {
+          updateTask({ content }, id);
+          $(this).toggleClass('updating')
+        }
+      } else {
+        const value = $(`.task-description[data-id='${id}']`).text();
+        $(`.update-input[data-id='${id}']`).val(value);
+        $(this).toggleClass('updating')
+      }
     });
 
     function slideRightAnimation($taskRow, withDoneStatus) {

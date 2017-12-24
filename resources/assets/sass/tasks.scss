@@ -84,6 +84,28 @@
   }
 }
 
+.task-des-div {
+  width: 100%;
+
+  &.updating {
+    .task-description {
+      display: none;
+    }
+    .update-input {
+      width: 100%;
+      display: block
+    }
+  }
+
+  @media (min-width: map-get($break-point, table-l)) {
+    width: 70%;
+  }
+}
+
+.update-input {
+  display: none;
+}
+
 @media (min-width: map-get($break-point, table-l)) {
   .container {
     width: 750px;

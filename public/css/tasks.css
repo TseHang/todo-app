@@ -803,6 +803,29 @@ input:-webkit-autofill {
   border-radius: 4px;
 }
 
+.task-des-div {
+  width: 100%;
+}
+
+.task-des-div.updating .task-description {
+  display: none;
+}
+
+.task-des-div.updating .update-input {
+  width: 100%;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .task-des-div {
+    width: 70%;
+  }
+}
+
+.update-input {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .container {
     width: 750px;

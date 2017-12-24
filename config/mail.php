@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'service@todoYo.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'service@mail.dozotealife.com'),
         'name' => env('MAIL_FROM_NAME', 'Todo-yo'),
     ],
 

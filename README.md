@@ -105,6 +105,7 @@
 - Method
     - put
 - Parameters
+    - content: 字串，不接受空字串
     - is_done: 布林，僅接受 1, 0, true, false 
 
 #### Delete 刪除任務

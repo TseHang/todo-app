@@ -48,7 +48,11 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $name)
-    {
+    {  
+        if(empty($request->content)) {
+            throw new Exception('Input error', 'empty string');
+            return;
+        }
         $request['user_id'] = User::where('name', $name)->first()->id;
         $input = Tasks::create($request->all());
         return $input;
